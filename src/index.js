@@ -37,9 +37,9 @@ app.use(passport.session())
 /* Messages Flash */
 app.use((req, res, next) => {
   app.locals.signUpMessage = req.flash("signUpMessage")
+  app.locals.user = req.user
   next()
 })
-
 
 /* --- Require Routes --- */
 app.use(require('./routes/index'))

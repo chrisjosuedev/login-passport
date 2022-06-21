@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const { isAuthenticated, isLogged } = require('../lib/auth')
 
 // Main
 router.get('/', isAuthenticated, (req, res, next) => {
@@ -8,7 +9,7 @@ router.get('/', isAuthenticated, (req, res, next) => {
 })
 
 // Sign Up
-router.get('/signup', (req, res, next) => {
+router.get('/signup', isLogged, (req, res, next) => {
   res.render('signup')
 })
 
@@ -19,7 +20,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 }))
 
 // Sign In
-router.get('/signin', (req, res) => {
+router.get('/signin', isLogged, (req, res) => {
   res.render('signin')
 })
 
@@ -40,12 +41,7 @@ router.get('/logout', (req, res) => {
   
 })
 
-// Middleware isAuthenticate
-function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  res.redirect('/signin')
-}
+
+
 
 module.exports = router
